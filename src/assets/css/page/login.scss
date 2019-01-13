@@ -1,0 +1,59 @@
+.sys-login{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #324157;
+
+    .login-title {
+        position: absolute;
+        top: 20%;
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+        color: white;
+    }
+
+    .form-group {
+        position: absolute;
+        left: 50%;
+        top: 30%;
+        width: 300px;
+        height: 160px;
+        margin: 10px 0 0 -190px;
+        padding: 40px;
+        border-radius: 5px;
+        background: #ffffff;
+        .el-form-item__error{
+            color: $loginErrTextColor;
+        }
+    }
+
+    .btn-login {
+        display: block;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        margin: 10px 0;
+        padding: 0;
+        background: $loginBtn;
+        border: none;
+        border-radius: 4px;
+        color: $loginTextColor;
+        font-size: 18px;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover{
+            background: darken($loginBtn, 2%)
+        }
+    }
+    
+    .err-msg{
+        color: $red;
+    }
+    .tip{
+        margin-top: 10px;
+        color: $loginTextColor;
+    }
+
+}

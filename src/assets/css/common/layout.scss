@@ -1,0 +1,30 @@
+.layout-container{
+    height: 100%;
+    overflow-y: hidden;
+    padding:0px 1px;
+    .el-container .el-main{
+    height: 100%;
+    overflow-y: hidden;
+    padding:0px 1px;
+    }
+    .el-header{
+        padding: 0px;
+    }
+     
+    .openSidebar{
+        flex:0 0 200px;
+        width: 200px;
+        .el-main {
+            margin: 0px;
+        }
+    }
+    .hideSidebar {
+        width: 36px !important;
+        .el-main {
+            margin-left: 36px;
+        }
+    }
+}
+     
+   
+    
