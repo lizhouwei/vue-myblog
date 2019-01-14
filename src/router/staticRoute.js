@@ -8,6 +8,20 @@ const staticRoute = [
     {
         path: '/login',
         component: () => import(/* webpackChunkName: 'login' */ 'views/login/index.vue')
+    } ,
+    {
+        path: '/home',
+        component: Layout,
+        children: [
+            {
+                path: '',
+                component: () => import(/* webpackChunkName: 'home' */ 'views/home/adminHome'),
+            }
+        ],
+        meta: {
+            title: "首页",
+            icon: "form"
+        }
     } 
 ]
 const asyncRouter = [

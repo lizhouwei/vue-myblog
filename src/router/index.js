@@ -9,7 +9,8 @@ import staticRoute from './staticRoute'
 import whiteList from './whiteList'
 
 const Layout = () => import(/* webpackChunkName: 'index' */ 'views/layout/index.vue')
- 
+
+
 function asyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，转换为组件对象
     if (!asyncRouterMap || asyncRouterMap.length === 0) {
         return []
@@ -19,21 +20,26 @@ function asyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，
 
     asyncRouterMap.forEach(permission => {
         const { type,path, componentUrl, name, icon, children } = permission
-
+        if(path=='/home'){
+            return 
+        }
         const router = {
-            path: path.substring(path.lastIndexOf("/")),
+            path: type == 'root'? path : path.substring(path.lastIndexOf("/")+1),
             meta: {
                 name: name,
                 icon: icon
             },
             children : asyncRouter(children)
         }
+      
         if(type=='root'|| path=='/home'){
             router.component = Layout
         }else if(componentUrl==''){
             router.component = {render (c) { return c('router-view') }}
         }else{
-            router.component = () => import(`${componentUrl}`)
+            //router.component = (resolve) =>  require([componentUrl], resolve)
+            router.component = () => import(`views/${componentUrl}.vue`)
+            //import(`${componentUrl}`)
         }
  
         accessedRouters.push(router)
@@ -51,9 +57,9 @@ function initRoute(router){
             asynceouter.push({ path: '*', redirect: '/404', hidden: true })
             asynceouter.forEach(arouter => {
                  console.log(arouter)
-                 router.addRoutes(arouter)
             })
-           
+            router.addRoutes(asynceouter)
+
                 console.log(router)
             
             //router.options.routes.push(asynceouter)
@@ -82,16 +88,19 @@ router.beforeEach((to, from, next) => {
     // 判断用户是否处于登录状态
     if (Auth.isLogin()) {
         // 如果当前处于登录状态，并且跳转地址为login，则自动跳回系统首页
-        if (to.path === '/login') {
+        if (to.path === '/') {
+            next({path: "/login", replace: true})
+        }else if (to.path === '/login') {
+            if(store.state.auth.addRouters.length==0){
+                initRoute(router) 
+            }
             next({path: "/home", replace: true})
-        } else if(to.path.indexOf("/error") >= 0){
-            // 防止因重定向到error页面造成beforeEach死循环
-            next()
         } else {
-            if(router.options.routes.length <= 3){
-                initRoute(router).then(() => {
-                    next({ ...to }) // hack方法 确保addRoutes已完成
+            if(store.state.auth.addRouters.length==0){
+                initRoute(router).then(()=>{
+                    next({ ...to , replace: true })
                 })
+                next()
             }else{
                 next()
             }

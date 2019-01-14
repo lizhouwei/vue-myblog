@@ -10,7 +10,7 @@ var data = [
             {   
                 name: '首页',
                 path: '',
-                componentUrl:'views/home/adminHome'
+                componentUrl:'home/adminHome'
             },
         ]
     },
@@ -24,61 +24,61 @@ var data = [
             {   
                 name: '介绍',
                 path: '/components/introduce',
-                componentUrl:'views/components/introduce'
+                componentUrl:'components/introduce'
             },
             {   
                 name: '功能类',
-                path: 'function',
+                path: '/components/function',
                 componentUrl: '',
                 children: [
                     {
                         path: '/components/function/permission',
                         name: '详细鉴权',
-                        componentUrl: 'views/components/function/permission'
+                        componentUrl: 'components/function/permission'
                     },
                     {
                         path: '/components/function/pageTable',
                         name: '表格分页',
-                        componentUrl:'views/components/function/pageTable'
+                        componentUrl:'components/function/pageTable'
                     }
                 ]
             },
             {    
                 name: '布局类',
-                path: 'ui',
+                path: '/components/ui',
                 componentUrl: '',
                 children: [
                     {
                         path: '/components/ui/pageTitle',
                         name: '页面标题',
-                        componentUrl:'views/components/ui/pageTitle'
+                        componentUrl:'components/ui/pageTitle'
                     },
                     {
                         path: '/components/ui/pageSection',
                         name: '子区域',
-                        componentUrl:'views/components/ui/pageSection'
+                        componentUrl:'components/ui/pageSection'
                     },
                     {
                         path: '/components/ui/pageSearch',
                         name: '搜索条',
-                        componentUrl:'views/components/ui/pageSearch'
+                        componentUrl:'components/ui/pageSearch'
                     },
                     {
                         path: '/components/ui/pageToolbar',
                         name: '工具条',
-                        componentUrl:'views/components/ui/pageToolbar'
+                        componentUrl:'components/ui/pageToolbar'
                     }
                 ]
             },
             {
                 name: '辅助类',
-                path: 'assist',
+                path: '/components/assist',
                 componentUrl: '',
                 children: [
                     {
                         path: '/components/assist/pageNotes',
                         name: '引用说明',
-                        componentUrl:'views/components/assist/pageNotes'
+                        componentUrl:'components/assist/pageNotes'
                     }
                 ]
             }
@@ -95,17 +95,17 @@ var data = [
                 path: '/example/table',
                 name: '列表页面',
                 permission: ['edit'],
-                componentUrl: 'views/example/table'
+                componentUrl: 'example/table'
             },
             {
                 path: '/example/charts',
                 name: '图表页面',
-                componentUrl: 'views/example/charts/index'
+                componentUrl: 'example/charts/index'
             },
             {
                 path: '/example/map',
                 name: '地图页面',
-                componentUrl: 'views/example/map/index'
+                componentUrl: 'example/map/index'
             }
         ]
     },
@@ -119,7 +119,7 @@ var data = [
             {   
                 name: '国际化',
                 path: '/i18n/index',
-                componentUrl:'views/i18n/index'
+                componentUrl:'i18n/index'
             }
         ]
     },
@@ -133,7 +133,7 @@ var data = [
             {   
                 name: '主题切换',
                 path: '/themeChange/index',
-                componentUrl:'views/themeChange/index'
+                componentUrl:'themeChange/index'
             }
         ]
     }
