@@ -11,7 +11,7 @@ export default {
         align: {
             type: String,
             default: function(){
-                return 'right'
+                return 'left'
             }
         }
     }
