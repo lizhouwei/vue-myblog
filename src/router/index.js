@@ -10,7 +10,6 @@ import whiteList from './whiteList'
 
 const Layout = () => import(/* webpackChunkName: 'index' */ 'views/layout/index.vue')
 
-
 function asyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，转换为组件对象
     if (!asyncRouterMap || asyncRouterMap.length === 0) {
         return []
@@ -20,7 +19,7 @@ function asyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，
 
     asyncRouterMap.forEach(permission => {
         const { type,path, componentUrl, name, icon, children } = permission
-        if(path=='/home'){
+        if(path=='/home'){//不同的角色应该有不同的首页 , 暂时将首页静态化
             return 
         }
         const router = {
@@ -38,8 +37,8 @@ function asyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，
             router.component = {render (c) { return c('router-view') }}
         }else{
             //router.component = (resolve) =>  require([componentUrl], resolve)
-            router.component = () => import(`views/${componentUrl}.vue`)
-            //import(`${componentUrl}`)
+            router.component = () => import(`views/${componentUrl}.vue`) //必须在变量前面加字符串
+            //import(`${componentUrl}`) //这种不行
         }
  
         accessedRouters.push(router)
@@ -55,21 +54,13 @@ function initRoute(router){
         store.dispatch('auth/getPermissionTree').then((res ) => {
             const asynceouter = asyncRouter(res) 
             asynceouter.push({ path: '*', redirect: '/404', hidden: true })
-            asynceouter.forEach(arouter => {
-                 console.log(arouter)
-            })
             router.addRoutes(asynceouter)
-
-                console.log(router)
-            
-            //router.options.routes.push(asynceouter)
             store.commit('auth/setRouters',asynceouter)
             resolve() 
         })
         console.log("路由生成完毕")
     })
 }
-
 
 NProgress.configure({ showSpinner: false });
 
@@ -91,24 +82,19 @@ router.beforeEach((to, from, next) => {
         if (to.path === '/') {
             next({path: "/login", replace: true})
         }else if (to.path === '/login') {
-            if(store.state.auth.addRouters.length==0){
-                initRoute(router) 
-            }
             next({path: "/home", replace: true})
         } else {
             if(store.state.auth.addRouters.length==0){
                 initRoute(router).then(()=>{
                     next({ ...to , replace: true })
                 })
-                next()
-            }else{
+             }else{
                 next()
             }
         }
     } else {
         // 如果是免登陆的页面则直接进入，否则跳转到登录页面
         if (whiteList.indexOf(to.path) >= 0) {
-            console.log('该页面无需登录即可访问')
             next()
         } else {
             console.warn('当前未处于登录状态，请登录')
@@ -121,11 +107,11 @@ router.beforeEach((to, from, next) => {
             }
             NProgress.done()
         }
-    }
+    }   
 })
 
 router.afterEach(() => {
-    NProgress.done(); // 结束Progress
+  NProgress.done() // 结束Progress
 })
 
 export default router
