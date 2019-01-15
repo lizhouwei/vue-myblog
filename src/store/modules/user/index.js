@@ -1,4 +1,4 @@
-
+import axios from 'utils/ajax'
 const state = {
     // 用户名
     id:'123456',
@@ -19,9 +19,22 @@ const mutations = {
         state.role = data.role
     }
 }
-
+const actions = {
+    getUserList({ commit }, params) {
+        return new Promise((resolve) => {
+            axios({
+                url: '/user/userList',
+                method: 'post',
+                data: {role : ''}
+            }).then(res => {
+                 resolve(res)
+            })
+        })
+    },
+}
 export default {
     namespaced: true,
     state,
-    mutations
+    mutations,
+    actions
 }
