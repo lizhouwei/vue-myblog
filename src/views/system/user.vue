@@ -28,7 +28,7 @@
             <el-button type="primary">修改</el-button>
         </app-toolbar>
         <!-- 表格  -->
-        <AppTable  :tableData="tableData" :rowDblclick="rowDblclick" :tableHeader="tableHeader"/>
+        <AppTable  :tableData="tableData" @row-click='rowClick'  :tableHeader="tableHeader"/>
     </div>
 </template>
 
@@ -36,11 +36,11 @@
 import {mapActions } from 'vuex'
 export const tableHeader = [ // 表头数据
   { prop: 'userCode', label: '用户编码', minWidth: '140px' },
-  { prop: 'userName', label: '用户名称', minWidth: '100px' },
-  { prop: 'plazano', label: '名称', minWidth: '100px', formatData: (val) => {return val} },
+  { prop: 'userName', label: '用户名称', minWidth: '100px' , formatter: (rowObject, value,  index) => {return '您好'+value}},
+  { prop: 'plazano', label: '名称', minWidth: '100px', formatter: (rowObject, value,  index) => {return '您好'+value}},
   { prop: 'car_plate', label: '号码' },
   { prop: 'card_no', label: '卡号', minWidth: "120px" },
-  { prop: 'laneno', label: '数据类型', formatData: (val)=> { return val} },
+  { prop: 'laneno', label: '数据类型', render: row => { const { laneno } = row ; return laneno ?  'laneno' : 'Unknow' } },
   { prop: 'staffname', label: '姓名', minWidth: '100px' },
   { prop: 'mediatype', label: '付款方式' },
   { prop: 'comp_cash', label: '计算费额' },
@@ -82,11 +82,11 @@ export default {
                 this.$message.error('获取数据失败，失败码')
           })
         },
-        search(){
+        search(){  
             console.log(`欲提交的数据   日期:${this.searchForm.time}  下拉条件:${this.searchForm.type}  文本: ${this.searchForm.text}`)
         },
-        rowDblclick(){
-
+        rowClick(data){
+            console.log(data.userCode)
         }
     }
 }
