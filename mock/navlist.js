@@ -150,6 +150,20 @@ var data = [
                 componentUrl:'system/user'
             }
         ]
+    },
+    {   id:'7',
+        path: '/blog',
+        componentUrl:'',
+        name: '博客管理',
+        type:'root',
+        pid: '',
+        children: [
+            {   
+                name: '博客管理',
+                path: '/blog/addBlog',
+                componentUrl:'blog/addBlog'
+            }
+        ]
     }
 ]
 

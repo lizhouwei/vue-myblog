@@ -7,6 +7,8 @@ import AppSection from './AppSection'
 import AppSearch from './AppSearch'
 import TableMixin from './TableMixin'
 import AppTable from './AppTable'
+import AppTinymce from './AppTinymce'
+
 
 // 组件库
 export   const Components = [
@@ -16,7 +18,8 @@ export   const Components = [
     AppSection,
     AppSearch,
     TableMixin,
-    AppTable
+    AppTable,
+    AppTinymce
 ]
  
  
