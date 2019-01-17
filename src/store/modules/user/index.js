@@ -27,8 +27,8 @@ const actions = {
                 method: 'post',
                 data: {role : ''}
             }).then(res => {
-                 resolve(res)
-            })
+                resolve(res)
+            }) 
         })
     },
 }

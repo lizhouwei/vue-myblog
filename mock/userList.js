@@ -1,4 +1,4 @@
-var data = [
+var userList = [
   {
       id:'111111',
       userCode:'13233',
@@ -56,8 +56,7 @@ var data = [
   userName: '999'
   } 
 ]
-
 export default [{
   path: '/user/userList',
-  data: data
+  data: {total: userList.length,currentPage:1, rows: userList}
 }]

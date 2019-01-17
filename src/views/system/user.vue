@@ -22,22 +22,23 @@
                 </el-form-item>
             </el-form>
         </app-search>
-        <!-- 工具条 -->
+        <!-- 工具s条 -->
         <app-toolbar >
             <el-button type="primary">新增</el-button>
             <el-button type="primary">修改</el-button>
         </app-toolbar>
         <!-- 表格  -->
-        <AppTable  :tableData="tableData" @row-click='rowClick'  :tableHeader="tableHeader"/>
+        <AppTable   ref="userTable" :url="'user/getUserList'" :formParams="formParams"  @row-click='rowClick'  :tableHeader="tableHeader"/>
     </div>
 </template>
 
 <script>
 import {mapActions } from 'vuex'
+
 export const tableHeader = [ // 表头数据
-  { prop: 'userCode', label: '用户编码', minWidth: '140px' },
-  { prop: 'userName', label: '用户名称', minWidth: '100px' , formatter: (rowObject, value,  index) => {return '您好'+value}},
-  { prop: 'plazano', label: '名称', minWidth: '100px', formatter: (rowObject, value,  index) => {return '您好'+value}},
+  { prop: 'userCode', label: '用户编码', minWidth: '100px' },
+  { prop: 'userName', label: '用户名称', minWidth: '140px' , formatter: (rowObject, value,  index) => {return '您好'+value}},
+  { prop: 'plazano', label: '名称', minWidth: '140px', formatter: (rowObject, value,  index) => {return '您好'+value}},
   { prop: 'car_plate', label: '号码' },
   { prop: 'card_no', label: '卡号', minWidth: "120px" },
   { prop: 'laneno', label: '数据类型', render: row => { const { laneno } = row ; return laneno ?  'laneno' : 'Unknow' } },
@@ -62,27 +63,19 @@ export default {
                 type: '',
                 text: ''
             },
+            formParams:{},
             tableHeader: tableHeader,
-            tableData:[]
-        }
+         }
     },
     mounted() {
-        this.getTableData()
-    },
+     },
     methods: {
        ...mapActions({
-            getUserList: 'user/getUserList'
+             
         }),
-        // 获取table数据
-        getTableData() {
-          this.getUserList({}).then(res => {
-               this.tableData = res 
-          }).catch(err => {
-                  console.log(err)
-                this.$message.error('获取数据失败，失败码')
-          })
-        },
-        search(){  
+        search(){
+          const formParams={time:this.searchForm.time,type:this.searchForm.type,text: this.searchForm.text}
+          this.$refs.userTable.searchHandler(formParams)
             console.log(`欲提交的数据   日期:${this.searchForm.time}  下拉条件:${this.searchForm.type}  文本: ${this.searchForm.text}`)
         },
         rowClick(data){
