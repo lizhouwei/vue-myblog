@@ -41,7 +41,15 @@ export default {
      tinymce.init({})
   },
   methods:{
-     
+    handleImgUpload (blobInfo, success, failure) {
+      let formdata = new FormData()
+      formdata.set('upload_file', blobInfo.blob())
+      axios.post('/api/upload', formdata).then(res => {
+        success(res.data.data.src)
+      }).catch(res => {
+        failure('error')
+      })
+    }
   }
 }
 </script>
