@@ -73,7 +73,6 @@ export default {
              
         }),
         search(){
-          //const formParams={time:this.searchForm.time,type:this.searchForm.type,text: this.searchForm.text}
           this.$refs.userTable.searchHandler(this.searchForm)
             console.log(`欲提交的数据  :${this.searchForm} `)
         },
