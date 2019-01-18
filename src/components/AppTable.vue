@@ -19,7 +19,6 @@
           @row-click="(row, event, column) => emitEventHandler('row-click', row, column)"       
 >
 
-  <el-table-column type="index" align="center" fixed></el-table-column>
   <el-table-column v-for="(th, key) in tableHeader"
         :key="key"
         :prop="th.prop"
@@ -103,9 +102,9 @@ export default {
     const _this = this
     return {
       pagination: {
-        pageSizes:[20,50,100],
+        pageSizes:[10,20,50,100],
         currentPage: 1,
-        pageSize: 20,
+        pageSize: 10,
         total: 0
       },
       loading: false,
@@ -128,9 +127,9 @@ export default {
       let { url,method, pagination} = this
       const params = Object.assign({ currentPage: pagination.currentPage, pageSize : pagination.pageSize} ,formParams)
       console.log(params)
-      this.$store.dispatch(url,params ).then((res) => {
-        this.tableData = res.rows
-        this.handlePagination(res)
+     this.$store.dispatch(url,params ).then((res) => {
+        this.tableData = res.data.list
+        this.handlePagination(res.data)
       }).catch(err => {
          this.$message.error(err)
       })
@@ -154,4 +153,5 @@ export default {
     }
   }
 }
+
 </script>

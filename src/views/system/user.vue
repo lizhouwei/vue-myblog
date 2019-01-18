@@ -4,18 +4,16 @@
         <app-search>
             <el-form :inline="true" :model="searchForm">
                 <el-form-item>
-                    <el-date-picker v-model="searchForm.time" type="date" placeholder="选择日期"></el-date-picker>
+                    <el-input v-model="searchForm.userCode" placeholder="请输入用户编码"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-select v-model="searchForm.type" placeholder="下拉选择">
-                        <el-option label="选项一" value="选项一"></el-option>
-                        <el-option label="选项二" value="选项二"></el-option>
-                        <el-option label="选项三" value="选项三"></el-option>
-                        <el-option label="选项四" value="选项四"></el-option>
-                    </el-select>
+                    <el-input v-model="searchForm.userName" placeholder="请输入用户名"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input v-model="searchForm.text" placeholder="请输入查询条件"></el-input>
+                    <el-input v-model="searchForm.mobile" placeholder="请输入用户手机号"></el-input>
+                </el-form-item>
+                  <el-form-item>
+                    <el-input v-model="searchForm.email" placeholder="请输入用户邮箱"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="search">查询</el-button>
@@ -37,10 +35,10 @@ import {mapActions } from 'vuex'
 
 export const tableHeader = [ // 表头数据
   { prop: 'userCode', label: '用户编码', minWidth: '100px' },
-  { prop: 'userName', label: '用户名称', minWidth: '140px' , formatter: (rowObject, value,  index) => {return '您好'+value}},
-  { prop: 'plazano', label: '名称', minWidth: '140px', formatter: (rowObject, value,  index) => {return '您好'+value}},
-  { prop: 'car_plate', label: '号码' },
-  { prop: 'card_no', label: '卡号', minWidth: "120px" },
+  { prop: 'userName', label: '用户名称', minWidth: '140px' , formatter: (rowObject, value,  index) => {return  value}},
+  { prop: 'mobile', label: '手机号', minWidth: '140px', formatter: (rowObject, value,  index) => {return  value}},
+  { prop: 'email', label: '邮箱' },
+  { prop: 'createTime', label: '注册时间', minWidth: "120px" },
   { prop: 'laneno', label: '数据类型', render: row => { const { laneno } = row ; return laneno ?  'laneno' : 'Unknow' } },
   { prop: 'staffname', label: '姓名', minWidth: '100px' },
   { prop: 'mediatype', label: '付款方式' },
@@ -59,9 +57,10 @@ export default {
     data() {
         return {
             searchForm: {
-                time: '',
-                type: '',
-                text: ''
+                userCode: '',
+                userName: '',
+                mobile: '',
+                email: ''
             },
             formParams:{},
             tableHeader: tableHeader,
@@ -74,9 +73,9 @@ export default {
              
         }),
         search(){
-          const formParams={time:this.searchForm.time,type:this.searchForm.type,text: this.searchForm.text}
-          this.$refs.userTable.searchHandler(formParams)
-            console.log(`欲提交的数据   日期:${this.searchForm.time}  下拉条件:${this.searchForm.type}  文本: ${this.searchForm.text}`)
+          //const formParams={time:this.searchForm.time,type:this.searchForm.type,text: this.searchForm.text}
+          this.$refs.userTable.searchHandler(this.searchForm)
+            console.log(`欲提交的数据  :${this.searchForm} `)
         },
         rowClick(data){
             console.log(data.userCode)

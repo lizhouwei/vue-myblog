@@ -21,12 +21,14 @@ const mutations = {
 }
 const actions = {
     getUserList({ commit }, params) {
+        console.log(params)
         return new Promise((resolve) => {
             axios({
-                url: '/user/userList',
+                url: 'myblog/user/userList',
                 method: 'post',
-                data: {role : ''}
+                data: { ...params}
             }).then(res => {
+                console.log(res)
                 resolve(res)
             }) 
         })
