@@ -138,7 +138,8 @@ var data = [
         ]
     },
     {   id:'6',
-        path: '/blog',
+
+    path: '/blog',
         componentUrl:'',
         name: '博客管理',
         type:'root',
