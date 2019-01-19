@@ -28,7 +28,7 @@
         :align="th.align">
           <template slot-scope="scope">
             <div v-if="th.oper">
-              <el-button v-for="(o, key) in th.oper" :key="key" @click="o.clickFun(scope.row)" type="text" size="small">{{o.name}}</el-button>
+              <el-button v-for="(o, key) in th.oper" :key="key" @click="o.clickFun(scope.row)" :type="o.type" size="small">{{o.name}}</el-button>
             </div>
              <span v-else-if="th.filter">
               {{ Vue.filter(th['filter'])(scope.row[th.prop]) }}
