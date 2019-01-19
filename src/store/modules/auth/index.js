@@ -7,7 +7,9 @@ const state = {
     userId:'',
     roleId:'',
     navList: [],
-    addRouters: []
+    addRouters: [],
+    newAction: [],
+    allAction: []
 }
 
 const mutations = {
@@ -34,6 +36,12 @@ const mutations = {
     setRouters: (state, routers) => {
         state.addRouters = routers;
     },
+    setActions: (state, action) => {
+        let path = action.path        
+        let new_action_routers = action.routesTemplate        
+        state.allAction.push(path)        
+        state.newAction = new_action_routers    
+    }
 }
 
 const actions = {

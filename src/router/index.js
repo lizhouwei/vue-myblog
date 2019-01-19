@@ -9,6 +9,29 @@ import staticRoute from './staticRoute'
 import whiteList from './whiteList'
 
 const Layout = () => import(/* webpackChunkName: 'index' */ 'views/layout/index.vue')
+/**
+ * 动作路由 
+ * https://blog.csdn.net/dwt112101/article/details/79158712
+ */
+function actionRouter(router,actionPath) { 
+
+    if(contains(store.state.auth.allAction, actionPath)){
+        return
+    }
+    const actionRoute = {
+        path: actionPath,
+        component: () => import(`views/${actionPath}.vue`)
+    }
+    // return new Promise((resolve) => {
+    //     store.dispatch('auth/setActions', actionPath).then(res => { 
+    //         //router.addRoutes(actionRoute)
+    //         resolve()         
+    //     }).catch(err => {               
+    //         console.log(err)            
+    //     })
+    // })
+ }
+
 
 function asyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，转换为组件对象
     if (!asyncRouterMap || asyncRouterMap.length === 0) {
@@ -36,9 +59,13 @@ function asyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，
         }else if(componentUrl==''){
             router.component = {render (c) { return c('router-view') }}
         }else{
+            try {                        
             //router.component = (resolve) =>  require([componentUrl], resolve)
             router.component = () => import(`views/${componentUrl}.vue`) //必须在变量前面加字符串
             //import(`${componentUrl}`) //这种不行
+            } catch (error) {
+                console.log('组件不存在:' +componentUrl)// for debug
+            }
         }
  
         accessedRouters.push(router)
@@ -81,15 +108,21 @@ router.beforeEach((to, from, next) => {
         // 如果当前处于登录状态，并且跳转地址为login，则自动跳回系统首页
         if (to.path === '/') {
             next({path: "/login", replace: true})
-        }else if (to.path === '/login') {
-            next({path: "/home", replace: true})
-        } else {
+        }else {
             if(store.state.auth.addRouters.length==0){
                 initRoute(router).then(()=>{
                     next({ ...to , replace: true })
                 })
              }else{
-                next()
+                let actionPath = to.path.substr(1)
+                console.log(actionPath)
+                if ((actionPath.indexOf("_")) > 0 ) {         
+                    actionRouter(router,actionPath).then(() => { 
+                        next({...to, replace: true})            
+                    }) 
+                } else { 
+                    next()
+                }
             }
         }
     } else {
