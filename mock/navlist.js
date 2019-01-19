@@ -138,20 +138,6 @@ var data = [
         ]
     },
     {   id:'6',
-        path: '/system',
-        componentUrl:'',
-        name: '系统管理',
-        type:'root',
-        pid: '',
-        children: [
-            {   
-                name: '用户管理',
-                path: '/system/user',
-                componentUrl:'system/user'
-            }
-        ]
-    },
-    {   id:'7',
         path: '/blog',
         componentUrl:'',
         name: '博客管理',
@@ -162,6 +148,20 @@ var data = [
                 name: '博客管理',
                 path: '/blog/addBlog',
                 componentUrl:'blog/addBlog'
+            }
+        ]
+    },
+    {   id:'7',
+        path: '/system',
+        componentUrl:'',
+        name: '系统管理',
+        type:'root',
+        pid: '',
+        children: [
+            {   
+                name: '用户管理',
+                path: '/system/user',
+                componentUrl:'system/user'
             }
         ]
     }
