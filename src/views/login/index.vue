@@ -50,7 +50,7 @@ export default {
                         password: this.loginForm.password
                     }).then(res => {
                         if(res.login){
-                        this.$message.success('登录成功');
+                        //this.$message.success('登录成功');
                         this.$router.push('/home')
                         } else {
                             this.sysMsg = res.message
