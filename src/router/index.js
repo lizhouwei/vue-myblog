@@ -108,6 +108,8 @@ router.beforeEach((to, from, next) => {
         // 如果当前处于登录状态，并且跳转地址为login，则自动跳回系统首页
         if (to.path === '/') {
             next({path: "/login", replace: true})
+        }else if (to.path === '/login') {
+            next({path: "/home", replace: true})
         }else {
             if(store.state.auth.addRouters.length==0){
                 initRoute(router).then(()=>{
