@@ -1,6 +1,6 @@
 var data = {
     'code': '10000',
-    'token': '@guid',
+    'token': '123456789',
     'message':'操作成功',
      'user': {
         'id': '222',

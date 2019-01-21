@@ -6,17 +6,19 @@ var userList = {
     hasPreviousPage: false,
     isFirstPage: true,
     isLastPage: false,
-    list: [{
-    createTime: null,
-    credentialsSalt: "adminnull",
-    defaultRole: Object,
-    email: "aaa",
-    id: "1"
-    }],
+    list: [
+      {
+      createTime: null,
+      credentialsSalt: "adminnull",
+      defaultRole: '',
+      email: "aaa",
+      id: "1"
+      }
+    ],
     navigateFirstPage: 1,
     navigateLastPage: 3,
     navigatePages: 8,
-    navigatepageNums: (3) [1, 2, 3],
+    navigatepageNums: [1, 2, 3],
     nextPage: 2,
     pageNum: 1,
     pageSize: 10,
@@ -25,7 +27,7 @@ var userList = {
     size: 10,
     startRow: 1,
     total: 2
-    }
+  }
 }
 export default [{
   path: '/user/userList',
