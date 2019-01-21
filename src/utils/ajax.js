@@ -88,7 +88,7 @@ service.interceptors.request.use(
         })
         checkToken(cancel, function(){
             Auth.setLoginStatus()
-            config.headers.Authorization = `${store.state.user.token}`
+            config.headers.Authorization = `${store.state.auth.token}`
         })
         stopRepeatRequest(config.url, cancel)
         return config

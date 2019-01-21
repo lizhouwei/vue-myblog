@@ -22,20 +22,22 @@ const authToken = {
     // 设置Token
     setToken: function(token){
         // TODO: 设置token，并填写有效期
-        var maxAge = new Date(new Date().getTime() + 30 * 1000)
-        Cookies.set('token', token, {
-            expires: maxAge
-        })
+        // var maxAge = new Date(new Date().getTime() + 300 * 1000)
+        // Cookies.set('token', token, {
+        //     expires: maxAge
+        // })
+        Cookies.set('token', token )
     },
 
     // 设置登录状态
     setLoginStatus: function(){
         // TODO: 设置超时登录时间，在该时间范围内没有任何请求操作则自动删除
         console.log("登录状态最长时间更新")
-        var maxAge = new Date(new Date().getTime() + 30 * 60 * 1000)
-        Cookies.set(this.loginKey, 'true', {
-            expires: maxAge
-        })
+        //var maxAge = new Date(new Date().getTime() + 300 * 60 * 1000)
+        // Cookies.set(this.loginKey, 'true', {
+        //     expires: maxAge
+        // })
+        Cookies.set(this.loginKey, 'true' )
     },
 
     // 移除Token
