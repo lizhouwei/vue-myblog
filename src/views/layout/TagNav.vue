@@ -38,8 +38,7 @@ export default {
     },
     methods: {
         addTagNav(){
-             console.log(this.$router.currentRoute)
-            // 如果需要缓存则必须使用组件自身的name，而不是router的name
+         // 如果需要缓存则必须使用组件自身的name，而不是router的name
             this.$store.commit("tagNav/addTagNav", {
                 name: this.$router.currentRoute.meta.name,
                 path: this.$route.path,
