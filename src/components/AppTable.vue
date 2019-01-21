@@ -122,17 +122,26 @@ export default {
       }
   },
   methods:{
-    searchHandler(formParams) {
+     searchHandler(formParams) {
+
+      console.log(formParams)
       this.loading = true
-      let { url,method, pagination} = this
-      const params = Object.assign({ currentPage: pagination.currentPage, pageSize : pagination.pageSize} ,formParams)
-      console.log(params)
-     this.$store.dispatch(url,params ).then((res) => {
-        this.tableData = res.data.list
-        this.handlePagination(res.data)
-      }).catch(err => {
-         this.$message.error(err)
-      })
+      const { url,method,showPagination,pagination} = this
+      if(showPagination){
+        formParams = Object.assign( pagination ,formParams)
+        this.$store.dispatch(url,formParams).then((res) => {
+          this.tableData = res.data.list
+          this.handlePagination(res.data) 
+        }).catch(err => {
+          this.$message.error(err)
+        })
+      }else{
+        this.$store.dispatch(url,formParams).then((res) => {
+          this.tableData = res
+          }).catch(err => {
+            this.$message.error(err)
+        })
+      }
       this.loading = false
     },
     emitEventHandler(event,row) {
