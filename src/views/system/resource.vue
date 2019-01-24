@@ -17,12 +17,15 @@
 </el-container>
  <div>
     <resource-add :show.sync="show" @renovate="getuser"></resource-add >
+    <resource-edit :show.sync="editShow" @renovate="getuser"></resource-edit >
     </div>
 </div>
 </template>
 
 <script>
 import ResourceAdd from './resourceAdd'
+import ResourceEdit from './resourceEdit'
+
 
 
 const tableHeader = [ // 表头数据
@@ -32,7 +35,7 @@ const tableHeader = [ // 表头数据
   { prop: 'componentUrl', label: '资源组件路径', minWidth: '100px' },
   { prop: 'oper', label: '操作', fixed: 'right', minWidth: '70px',
     oper: [
-      { name: '编辑', type:'text', clickFun: ()=>{} },
+      { name: '编辑', type:'text', clickFun:(row)=>{ this.editShow = true } },
       { name: '删除', type:'danger',clickFun: ()=>{} }
     ]
   }
@@ -40,10 +43,14 @@ const tableHeader = [ // 表头数据
 
   export default {
     name:'resource',
-    components:{ResourceAdd },
+    components:{
+      ResourceAdd,
+      ResourceEdit
+      },
     data() {
       return {
         show: false,//新增界面是否显示 
+        editShow: false,
         treeData: [],
         formParams:{pid:''},
         tableHeader: tableHeader
@@ -67,6 +74,10 @@ const tableHeader = [ // 表头数据
       handleAdd: function () {
       //显示新增界面
         this.show = true
+      },
+      handleEidt() {
+      //显示新增界面
+        this.editShow = true
       },
       getuser() {
 

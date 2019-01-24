@@ -1,7 +1,7 @@
 <template>
     <div class="sys-page">
        <!--新增界面-->
-        <el-dialog title="新增" :visible.sync="visible"  @close="handleClose" :show="show" append-to-body>
+        <el-dialog title="编辑" :visible.sync="visible"  @close="handleClose" :show="editShow" append-to-body>
           <el-form :model="addForm" label-width="110px" :rules="addFormRules" ref="addForm">
             <el-form-item label="上级资源名称" prop="parentname">
               <el-input v-model="addForm.parentname" auto-complete="off"></el-input>
@@ -34,16 +34,16 @@
 import {mapActions } from 'vuex'
  
 export default {
-  name: 'resourceAdd',
+  name: 'resourceEdit',
   props: {
-    show: {
+    editShow: {
       type: Boolean,
       default: false
     }
   },
   data() {
     return {
-      visible: this.show,
+      visible: this.editShow,
       addFormRules: {
         name: [
           { required: true, message: '请输入资源名称', trigger: 'blur' }
@@ -63,16 +63,15 @@ export default {
   },
   watch: {
     show() {          //注意要随时监控
-      this.visible = this.show;
+      this.visible = this.editShow;
     }
   },
   methods: {
     handleClose() {
-       this.$emit('update:show', false)
+       this.$emit('update:editShow', false)
        this.$nextTick(() => {
         this.$refs['addForm'].resetFields()
-        console.log(this.$refs['addForm'].resetFields())
-       })
+        })
     },
     handleCancell() {
       this.visible = false
