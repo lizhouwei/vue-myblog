@@ -1,6 +1,7 @@
 <template>
 <!--参考 https://www.cnblogs.com/sosoqi/p/9438549.html-->
 <!--参考 https://github.com/zollero/el-search-table-pagination/blob/master/packages/search-table-pagination/src/main.vue-->
+<!--参考 https://juejin.im/post/5a6941dc518825732258e321-->
 <!-- prop: 字段名name, label: 展示的名称, fixed: 是否需要固定(left, right), minWidth: 设置列的最小宽度(不传默认值), oper: 是否有操作列
            oper.name: 操作列字段名称, oper.clickFun: 操作列点击事件, formatData: 格式化内容 
   -->
@@ -13,22 +14,33 @@
           fit
           highlight-current-row 
           :data="tableData"
-          :height="height"
+          :height="tableHeight"
           @select="(selection, row) => emitEventHandler('select', selection, row)"
-          @select-all="selection => emitEventHandler('select-all', selection)"
-          @row-click="(row, event, column) => emitEventHandler('row-click', row, column)"       
+          @select-all="selection => emitEventHandler('select-all', selection)"  
 >
-
+  <!--选择-->
+  <el-table-column
+          v-if="tableConfig.hasSelection"
+          type="selection"
+          width="55">
+  </el-table-column>
+  <!--序号-->
+  <el-table-column
+          v-if="tableConfig.hasIndex"
+          type="index"
+          width="55">
+  </el-table-column>
   <el-table-column v-for="(th, key) in tableHeader"
         :key="key"
         :prop="th.prop"
         :label="th.label"
         :fixed="th.fixed"
+        :sortable="th.hasSort"
         :min-width="th.minWidth" 
         :align="th.align">
           <template slot-scope="scope">
             <div v-if="th.oper">
-              <el-button v-for="(o, key) in th.oper" :key="key" @click="o.clickFun(scope.row)" :type="o.type" size="small">{{o.name}}</el-button>
+              <el-button v-for="(o, key) in th.oper" :key="key" @click=" () => emitEventHandler(o.clickFun,scope.row)" :type="o.type" size="small">{{o.name}}</el-button>
             </div>
              <span v-else-if="th.filter">
               {{ Vue.filter(th['filter'])(scope.row[th.prop]) }}
@@ -64,35 +76,25 @@
 
 
 let props = {
-  tableConfig : Object,
-  height: {type:[String, Number],default: '350px'},
-  highlightCurrentRow: Boolean,
-  currentRowKey: [String, Number],
-  rowClassName: [String, Function],
-  rowStyle: [String, Function],
-  rowKey: [String, Function],
-  defaultExpandAll: Boolean,
-  expandRowKeys: Array,
-  defaultSort: Object,
-  tooltipEffect: String,
-  showSummary: Boolean,
-  sumText: String,
-  summaryMethod: Function,
-  tableStyle: {  type: String, default: "width:100%;margin-top:20px;" },
-  url: { type: String },
-  method: {
-    type: String,
-    default: 'post',
-    validator: value => {
-      const methodTypes = ['get', 'post', 'put', 'delete'];
-      return methodTypes.indexOf(value.toLowerCase()) !== -1;
+  tableConfig : {// table 表格的控制参数
+    type: Object,
+    default: function (){
+      return{
+        hasSelection: false ,
+        hasIndex: false   //是否有序列项
+      }
     }
-  },
+  } ,
+  height: {type:[String, Number],default: '450px'},
+  tableStyle: {  type: String, default: "width:100%;margin-top:20px;" },
+  url: { type: String }, 
   formParams: {  type: Object},
   autoLoad: { type: Boolean, default: true },
   type: { type: String, default: 'remote', },
   tableHeader: { type: Array },
-  showPagination: { type: Boolean, default: true
+  showPagination: { 
+    type: Boolean, 
+    default: true
   }
 }
  
@@ -101,6 +103,7 @@ export default {
   data() {
     const _this = this
     return {
+      tableHeight: this.showPagination?350:460,
       pagination: {
         pageSizes:[10,20,50,100],
         currentPage: 1,
@@ -119,7 +122,7 @@ export default {
      const { type, autoLoad, formParams} = this
       if (type === 'remote' && autoLoad) {
         this.searchHandler(formParams)
-      }
+      } 
   },
   methods:{
      searchHandler(formParams) {
@@ -145,7 +148,7 @@ export default {
       this.loading = false
     },
     emitEventHandler(event,row) {
-      this.$emit(event, row)
+        this.$emit(event, row)
     },
     handlePagination(data) {
       this.pagination.total = data.total
