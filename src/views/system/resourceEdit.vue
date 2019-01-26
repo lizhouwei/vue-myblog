@@ -4,22 +4,22 @@
         <el-dialog title="编辑" :visible.sync="visible"  @close="handleClose" :show="editShow" append-to-body>
           <el-form :model="addForm" label-width="110px" :rules="addFormRules" ref="addForm">
             <el-form-item label="上级资源名称" prop="parentname">
-              <el-input v-model="addForm.parentname" auto-complete="off"></el-input>
+              <el-input v-model="addForm.parentname" :disabled="true" >{{addForm.parentname}}</el-input>
             </el-form-item>
-            <el-form-item label="上级路由路径" prop="parentpath">
-               <el-input v-model="addForm.parentpath" auto-complete="off"></el-input>
+            <el-form-item label="上级路由路径" prop="parentpath" >
+               <el-input v-model="addForm.parentpath" :disabled="true" >{{addForm.parentpath}}</el-input>
             </el-form-item>
             <el-form-item label="资源名称" prop="name">
-              <el-input v-model="addForm.name" auto-complete="off"></el-input>
+              <el-input v-model="addForm.name"  >{{addForm.name}}</el-input>
             </el-form-item>
             <el-form-item label="路由路径" prop="path">
-               <el-input v-model="addForm.path" auto-complete="off"></el-input>
+               <el-input v-model="addForm.path" >{{addForm.path}}</el-input>
             </el-form-item>
             <el-form-item label="组件路径" prop="componentUrl">
-              <el-input  v-model="addForm.componentUrl" ></el-input>
+              <el-input  v-model="addForm.componentUrl" >{{addForm.componentUrl}}</el-input>
             </el-form-item>
-            <el-form-item label="序号" prop="order">
-              <el-input-number  :min="0" v-model="addForm.order"></el-input-number>
+            <el-form-item label="序号" prop="zindex">
+              <el-input-number  :min="0" v-model="addForm.zindex"></el-input-number>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -39,6 +39,14 @@ export default {
     editShow: {
       type: Boolean,
       default: false
+    },
+    addForm: {//新增界面数据
+        parentname:'',
+        parentpath:'',
+        name: '',
+        path: '',
+        componentUrl: '',
+        zindex: 0
     }
   },
   data() {
@@ -49,20 +57,13 @@ export default {
           { required: true, message: '请输入资源名称', trigger: 'blur' }
         ]
       },
-      addForm: {//新增界面数据
-        parentname:'',
-        parentpath:'',
-        name: '',
-        path: '',
-        componentUrl: '',
-        order: 1 
-      }
+      
     }
   },
   mounted() {
   },
   watch: {
-    show() {          //注意要随时监控
+    editShow() {          //注意要随时监控
       this.visible = this.editShow;
     }
   },

@@ -18,8 +18,8 @@
             <el-form-item label="组件路径" prop="componentUrl">
               <el-input  v-model="addForm.componentUrl" ></el-input>
             </el-form-item>
-            <el-form-item label="序号" prop="order">
-              <el-input-number  :min="0" v-model="addForm.order"></el-input-number>
+            <el-form-item label="序号" prop="zindex">
+              <el-input-number  :min="0" v-model="addForm.zindex"></el-input-number>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -55,7 +55,7 @@ export default {
         name: '',
         path: '',
         componentUrl: '',
-        order: 1 
+        zindex: 1 
       }
     }
   },
