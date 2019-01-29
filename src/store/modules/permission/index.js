@@ -28,15 +28,13 @@ const actions = {
        })
     },
     permissionList({commit},params){
-        console.log('permissionList')
-        return new Promise((resolve) =>{
+         return new Promise((resolve) =>{
             const { pid} = params
             let permissionList = []
             // 将菜单数据扁平化为一级
             function flatNavList(arr){
                 for(let v of arr){
-                    console.log(v.pid)
-                    if(v.pid === pid ){
+                     if(v.pid === pid ){
                         permissionList.push(v)
                     }else{
                         flatNavList(v.children)

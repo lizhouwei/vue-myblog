@@ -1,30 +1,42 @@
 <template>
     <div class="sys-page">
        <!--新增界面-->
-        <el-dialog title="新增" :visible.sync="visible"  @close="handleClose" :show="show" append-to-body>
-          <el-form :model="addForm" label-width="110px" :rules="addFormRules" ref="addForm">
-            <el-form-item label="上级资源名称" prop="parentname">
-              <el-input v-model="addForm.parentname" auto-complete="off"></el-input>
+        <el-dialog title="新增" :visible.sync="visible" @close="handleClose" :show="show" append-to-body>
+          <el-form  ref="addForm" :model="addForm" label-width="110px" :rules="addFormRules">
+            <el-form-item label="上级资源名称">
+              <el-input v-model="addForm.parentname" :disabled="true"></el-input>
             </el-form-item>
-            <el-form-item label="上级路由路径" prop="parentpath">
-               <el-input v-model="addForm.parentpath" auto-complete="off"></el-input>
+            <el-form-item label="上级路由路径">
+               <el-input v-model="addForm.parentpath" :disabled="true"></el-input>
             </el-form-item>
             <el-form-item label="资源名称" prop="name">
-              <el-input v-model="addForm.name" auto-complete="off"></el-input>
+              <el-input v-model="addForm.name" ></el-input>
             </el-form-item>
             <el-form-item label="路由路径" prop="path">
-               <el-input v-model="addForm.path" auto-complete="off"></el-input>
+               <el-input v-model="addForm.path"></el-input>
             </el-form-item>
             <el-form-item label="组件路径" prop="componentUrl">
               <el-input  v-model="addForm.componentUrl" ></el-input>
             </el-form-item>
+            <el-form-item label="状态" prop="state">
+              <el-radio-group v-model="addForm.state">
+                <el-radio-button label="0">有效</el-radio-button>
+                <el-radio-button label="1">无效</el-radio-button>
+              </el-radio-group>
+          </el-form-item>
+          <el-form-item label="是否隐藏" prop="hide">
+            <el-radio-group v-model="addForm.hide">
+              <el-radio-button  label="0">是</el-radio-button>
+              <el-radio-button  label="1">否</el-radio-button>
+            </el-radio-group>
+        </el-form-item>
             <el-form-item label="序号" prop="zindex">
-              <el-input-number  :min="0" v-model="addForm.zindex"></el-input-number>
+              <el-input-number  v-model="addForm.zindex"></el-input-number>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-             <el-button @click="handleCancell">取 消</el-button>
-            <el-button type="primary" @click="sumbit">确 定</el-button>
+            <el-button @click="handleCancell">取 消</el-button>
+            <el-button type="primary" @click="handleSumbit('addForm')">确 定</el-button>
           </div>
         </el-dialog>
      </div>
@@ -39,6 +51,16 @@ export default {
     show: {
       type: Boolean,
       default: false
+    },
+    parentNode: { 
+      type: Object,
+      default: function (){
+        return{
+          pid:'',
+          parentname:'',
+          parentpath:''
+        }
+      }
     }
   },
   data() {
@@ -50,16 +72,23 @@ export default {
         ]
       },
       addForm: {//新增界面数据
-        parentname:'',
-        parentpath:'',
+        pid: this.parentNode.id,
+        parentname:this.parentNode.name,
+        parentpath:this.parentNode.path,
         name: '',
         path: '',
         componentUrl: '',
-        zindex: 1 
+        state:'0',
+        hide:'0',
+        zindex: 0
       }
     }
   },
   mounted() {
+    const { parentNode} = this
+    this.addForm.pid = this.parentNode.id
+    this.addForm.parentname = this.parentNode.name
+    this.addForm.parentpath = this.parentNode.path
   },
   watch: {
     show() {          //注意要随时监控
@@ -67,27 +96,27 @@ export default {
     }
   },
   methods: {
-    handleClose() {
-       this.$emit('update:show', false)
-       this.$nextTick(() => {
-        this.$refs['addForm'].resetFields()
-        console.log(this.$refs['addForm'].resetFields())
-       })
+    handleClose(done) {
+      this.$emit('update:show', false)
+
+      //  this.$nextTick(() => {
+      //   this.$refs['addForm'].resetFields()
+      //  })
     },
     handleCancell() {
       this.visible = false
-      this.handleClose()
+      //this.handleClose()
     },
-    sumbit() {
-      this.visible = false
+    handleSumbit() {
       this.$refs.addForm.validate((valid) => {
         if (valid) {
-          this.$confirm('确认提交吗？', '提示', {}).then(() => {
+            this.$confirm('确认提交吗？', '提示', {}).then(() => {
             this.addLoading = true
-            let para = Object.assign({}, this.addForm)
-             this.$store.dispatch('permission/savePermission',para).then((res) => {
+            this.$store.dispatch('permission/savePermission',this.addForm).then((res) => {
               this.addLoading = false
               this.$message({ message: '提交成功',  type: 'success' })
+              this.$emit('refreshNode')
+            
             })
           })
         }

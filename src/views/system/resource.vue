@@ -18,8 +18,8 @@
     </el-container>
 </el-container>
  <div>
-    <resource-add :show.sync="show" ></resource-add > 
-    <resource-edit :editShow.sync="editShow" :addForm='addForm' ></resource-edit >  
+    <resource-add :show.sync="show" v-if='show' @refreshNode='refreshNode' :parentNode='selectNode'></resource-add > 
+    <resource-edit :editShow.sync="editShow" v-if='editShow'  ></resource-edit >  
     </div>
 </div>
 </template>
@@ -35,12 +35,12 @@ const tableHeader = [ // 表头数据
   { prop: 'id', label: 'id', minWidth: '50px' },
   { prop: 'code', label: '编号', minWidth: '100px' },
   { prop: 'name', label: '资源名称' , minWidth: '100px'},
-  { prop: 'path', label: '资源路径', minWidth: '100px' },
-  { prop: 'componentUrl', label: '资源组件路径', minWidth: '100px' },
-  { prop: 'state', label: '状态', minWidth: '100px' },
-  { prop: 'hide', label: '是否隐藏', minWidth: '100px' },
+  { prop: 'path', label: '资源路径', minWidth: '150px' },
+  { prop: 'componentUrl', label: '资源组件路径', minWidth: '150px' },
+  { prop: 'state', label: '状态', minWidth: '50px' },
+  { prop: 'hide', label: '隐藏', minWidth: '50px' },
   { prop: 'icon', label: '图标名称', minWidth: '100px' },
-  { prop: 'zindex', label: '排序', minWidth: '100px' },
+  { prop: 'zindex', label: '排序', minWidth: '50px' },
   { prop: 'oper', label: '操作', fixed: 'right', minWidth: '150px',
     oper: [
       { name: '编辑', type:'primary', clickFun : 'handleEdit' },
@@ -62,7 +62,6 @@ export default {
       treeData: [],
       formParams:{pid:'0'},
       tableHeader: tableHeader,
-      addForm:{},
       selectNode:{}
     }
   },
@@ -76,25 +75,22 @@ export default {
       this.$refs.resourceTable.searchHandler({pid : '0'})
       }) 
     },
+    refreshNode(){
+      this.loadNode()
+    },
     nodeClick(object,node,treeObject){
-    
       this.selectNode = object
       this.$refs.resourceTable.searchHandler({pid : object.id})
       },
     handleAdd() {
-    //显示新增界面
       this.show = true
     },
     // 编辑
     handleEdit(data){
-      this.addForm = Object.assign( this.addForm ,data)
-      this.addForm.parentname = this.selectNode.name
-      this.addForm.parentpath = this.selectNode.path
       this.editShow = true
      },
     // 删除
     handleDel (data) {
-      console.log( data)
         this.$store.dispatch('permission/delPermission',{id:data.id}).then((res) => {
           this.loadNode()
        }) 
