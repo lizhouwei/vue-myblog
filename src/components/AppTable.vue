@@ -30,7 +30,9 @@
           type="index"
           width="55">
   </el-table-column>
-  <el-table-column v-for="(th, key) in tableHeader"
+  <template v-for="(th,key) in tableHeader">
+    <el-table-column 
+        v-if='!th.hide'
         :key="key"
         :prop="th.prop"
         :label="th.label"
@@ -56,6 +58,7 @@
             </span>
           </template>
       </el-table-column>
+    </template>
 </el-table>
 <div v-if="showPagination"
       style="margin-top: 10px;text-align: center;">
