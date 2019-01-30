@@ -71,6 +71,7 @@ export default {
     }
   },
   data() {
+    const {editNode} = this
     return {
       visible: this.editShow,
       editFormRules: {
