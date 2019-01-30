@@ -19,7 +19,7 @@
 </el-container>
  <div>
     <resource-add :show.sync="show" v-if='show' @refreshNode='refreshNode' :parentNode='selectNode'></resource-add > 
-    <resource-edit :editShow.sync="editShow" v-if='editShow'  ></resource-edit >  
+    <resource-edit :editShow.sync="editShow" v-if='editShow' @refreshNode='refreshNode' :editNode='editNode' ></resource-edit >  
     </div>
 </div>
 </template>
@@ -32,7 +32,7 @@ import ResourceEdit from './resourceEdit'
 // show：是否显示，icon：按钮图标，plain：是否朴素按钮，disabled：是否禁用，method：回调方法
 
 const tableHeader = [ // 表头数据
-  { prop: 'id', label: 'id', minWidth: '50px' },
+  { prop: 'id', label: 'id', minWidth: '50px',hide:true },
   { prop: 'code', label: '编号', minWidth: '100px' },
   { prop: 'name', label: '资源名称' , minWidth: '100px'},
   { prop: 'path', label: '资源路径', minWidth: '150px' },
@@ -62,7 +62,8 @@ export default {
       treeData: [],
       formParams:{pid:'0'},
       tableHeader: tableHeader,
-      selectNode:{}
+      selectNode:{},
+      editNode:{}
     }
   },
   mounted() {
@@ -81,19 +82,22 @@ export default {
     nodeClick(object,node,treeObject){
       this.selectNode = object
       this.$refs.resourceTable.searchHandler({pid : object.id})
-      },
+    },
     handleAdd() {
       this.show = true
     },
     // 编辑
     handleEdit(data){
+      this.editNode =  Object.assign( data ,this.editForm )
+      this.editNode.parentname = this.selectNode.name
+      this.editNode.parentpath = this.selectNode.path
       this.editShow = true
      },
     // 删除
     handleDel (data) {
-        this.$store.dispatch('permission/delPermission',{id:data.id}).then((res) => {
-          this.loadNode()
-       }) 
+      this.$store.dispatch('permission/delPermission',{id:data.id}).then((res) => {
+        this.loadNode()
+      }) 
     }
   }
 }

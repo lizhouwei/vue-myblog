@@ -85,7 +85,6 @@ export default {
     }
   },
   mounted() {
-    const { parentNode} = this
     this.addForm.pid = this.parentNode.id
     this.addForm.parentname = this.parentNode.name
     this.addForm.parentpath = this.parentNode.path
