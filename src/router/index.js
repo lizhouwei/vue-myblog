@@ -41,7 +41,8 @@ function asyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，
     const accessedRouters =[] 
 
     asyncRouterMap.forEach(permission => {
-        const { type,path, componentUrl, name, icon, children } = permission
+        const { istype,path, componentUrl, name, icon, children } = permission
+        const type = istype //后期优化
         if(path=='/home'){//不同的角色应该有不同的首页 , 暂时将首页静态化
             return 
         }

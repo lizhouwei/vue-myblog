@@ -19,7 +19,7 @@ const staticRoute = [
             }
         ],
         meta: {
-            title: "首页",
+            name: "首页",
             icon: "form"
         }
     } 
