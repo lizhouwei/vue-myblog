@@ -6,7 +6,7 @@ const state = {
     token: '',
     userId:'',
     roleId:'',
-    navList: [],
+    permissionList: [],
     addRouters: [],
     newAction: [],
     allAction: []
@@ -31,7 +31,7 @@ const mutations = {
         state.token = data
     },
     setPermissionList: (state, data) => {
-        state.navList = data
+        state.permissionList = data
     },
     setRouters: (state, routers) => {
         state.addRouters = routers;
@@ -110,38 +110,20 @@ const actions = {
             })
         })
     },
-    // 获取该用户的菜单列表
+    // 获取该用户角色的菜单列表
     getPermissionTree({dispatch,commit,state}){
+        console.log(state.roleId)
          return new Promise((resolve) =>{
             axios({
-                url: '/user/navlist',
-                methods: 'post',
-                data: {role : state.roleId}
-            }).then((response) => {
+                url: 'myblog/login/rolePremsTree',
+                method: 'post',
+                data: {id : '1'}
+            }).then((res) => {
+                const response = res.data
                 commit('setPermissionList', response)
-                commit('menu/setNavList', response, { root: true })
-                dispatch("menu/generateTopNavList",'', { root: true })
+                dispatch("menu/generateMenuList",response, { root: true })
                 resolve(response)
             })
-        })
-    },
- 
-    // 将菜单列表扁平化形成权限列表
-    getFlatPermissionList({state}){
-        return new Promise((resolve) =>{
-            let permissionList = []
-            // 将菜单数据扁平化为一级
-            function flatNavList(arr){
-                for(let v of arr){
-                    if(v.children && v.children.length){
-                        flatNavList(v.children)
-                    } else{
-                        permissionList.push(v)
-                    }
-                }
-            }
-            flatNavList(state.navList)
-            resolve(permissionList)
         })
     }
 }
