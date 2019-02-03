@@ -46,7 +46,7 @@ const actions = {
        })
     },
      // 获取该用户的菜单列表
-     savePermission({ commit},params){
+    savePermission({ commit},params){
         return new Promise((resolve) =>{
            axios({
                url: 'myblog/resource/savePermission',
@@ -58,6 +58,19 @@ const actions = {
            })
        })
    },
+   updatePermission({ commit},params){
+        return new Promise((resolve) =>{
+        axios({
+            url: 'myblog/resource/updatePermission',
+            method: 'post',
+            data: { ...params }
+        }).then((res) => {
+            
+            resolve(res)
+        })
+    })
+    },
+   
    delPermission({ commit},params){
     return new Promise((resolve) =>{
        axios({

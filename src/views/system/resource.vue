@@ -86,7 +86,7 @@ export default {
     handleAdd() {
       this.show = true
     },
-    // 编辑
+    // 编辑 
     handleEdit(data){
       this.editNode =  Object.assign( data ,this.editForm )
       this.editNode.parentname = this.selectNode.name
