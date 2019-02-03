@@ -1,9 +1,10 @@
 <template>
+<!-- https://panjiachen.gitee.io/vue-element-admin/#/table/complex-table -->
     <div class="tag-nav">
        <scroll-bar ref="scrollBar">
             <el-tag  :key="index" :class="isActive(item) ? 'cur' : ''" v-for="(item, index) in cachedViewList"  closable :disable-transitions="false" @close="handleClose(item, index)">
                 <router-link ref="tag"  :to="item.path">
-                    {{item.title}} 
+                    {{item.name}} 
                 </router-link>
         </el-tag>
         </scroll-bar>
@@ -38,6 +39,7 @@ export default {
     },
     methods: {
         addTagNav(){
+            console.log(this.$router)
          // 如果需要缓存则必须使用组件自身的name，而不是router的name
             this.$store.commit("tagNav/addTagNav", {
                 name: this.$router.currentRoute.meta.name,
