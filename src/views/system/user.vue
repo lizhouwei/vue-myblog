@@ -49,7 +49,7 @@ export const tableHeader = [ // 表头数据
   { prop: 'laneno', label: '状态', render: row => { const { laneno } = row ; return laneno ?  'laneno' : 'Unknow' } },
 { prop: 'oper', label: '操作', fixed: 'right', minWidth: '140px',
     oper: [
-      { name: '编辑', type:'text', clickFun: ()=>{} },
+      { name: '编辑', type:'primary', clickFun: ()=>{} },
       { name: '删除', type:'danger',clickFun: ()=>{} }
     ]
   }
