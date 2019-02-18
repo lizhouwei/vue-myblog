@@ -5,9 +5,14 @@
   <el-tree
           class="filter-tree"
           highlight-current
+          :show-checkbox='checkbox'
+          node-key="id"
           :data="treeData"
           :props="defaultProps"
           :filter-node-method="filterNode"
+          :default-expand-all="expandAll"
+          :default-expanded-keys="expandedKeys"
+          :default-checked-keys="eheckedKeys"
           @node-click=" (object,node,treeObject) => emitEventHandler('node-click', object, node)" 
           ref="tree2">
         </el-tree>
@@ -24,6 +29,10 @@ let props = {
   autoLoad: { type: Boolean, default: true },
   type: { type: String, default: 'remote', },
   treeData: { type: Array },
+  expandAll:{ type: Boolean, default: false },
+  expandedKeys: { type: Array },
+  eheckedKeys: { type: Array },
+  checkbox:{ type: Boolean, default: false },
 }
  
 export default {
