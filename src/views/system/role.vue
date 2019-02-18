@@ -8,11 +8,12 @@
         <!-- 表格  -->
         <AppTable  ref="roleTable" :url="'role/roleList'" :formParams="formParams" :tableHeader="tableHeader"
         @handleEdit='handleEdit'
-        @handleDel='handleDel'/>
+        @handleDel='handleDel'
+        @handlePermission='handlePermission'/>
        </el-aside>
     <el-container>
       <el-header style=" height:40px; text-align: right; font-size: 12px">
-        权限树
+        <AppTree ref="resourceTree" :checkbox=true :expandedKeys='expandedKeys' :eheckedKeys='eheckedKeys' :treeData="treeData"/>
       </el-header>
       <el-main>
          
@@ -20,8 +21,8 @@
     </el-container>
 </el-container>
   <div>
-    <role-add :show.sync="show" v-if='show' @refreshNode='refreshNode'></role-add > 
-    <role-edit :editShow.sync="editShow" v-if='editShow' @refreshNode='refreshNode' :editNode='editNode' ></role-edit >  
+    <role-add :show.sync="show" v-if='show' @refreshTable='refreshTable'></role-add > 
+    <role-edit :editShow.sync="editShow" v-if='editShow' @refreshTable='refreshTable' :editRow='editRow' ></role-edit >  
   </div>
 </div>
 </template>
@@ -30,13 +31,13 @@
 
 const tableHeader = [ // 表头数据
   { prop: 'id', label: 'id', minWidth: '50px',hide:true },
-  { prop: 'roleCode', label: '编号', minWidth: '100px' },
+  { prop: 'roleCode', label: '编号', minWidth: '60px' },
   { prop: 'roleName', label: '角色名称' , minWidth: '100px'},
-  { prop: 'state', label: '状态', minWidth: '50px' },
   { prop: 'oper', label: '操作', fixed: 'right', minWidth: '150px',
     oper: [
       { name: '编辑', type:'primary', clickFun : 'handleEdit' },
-      { name: '删除', type:'danger',clickFun:'handleDel' }
+      { name: '删除', type:'danger',clickFun:'handleDel' },
+      { name: '权限树', type:'danger',clickFun:'handlePermission' }
     ]
   }
 ]
@@ -56,34 +57,39 @@ export default {
       treeData: [],
       formParams:{},
       tableHeader: tableHeader,
-      selectNode:{},
-      editNode:{}
+      editRow:{},
+      expandedKeys:[],
+      eheckedKeys:[]
     }
   },
-  mounted() {
-   },
   methods: {
-     
-    refreshNode(){
-      this.loadNode()
-    },
-    nodeClick(object,node,treeObject){
-      this.selectNode = object
-      this.$refs.resourceTable.searchHandler({pid : object.id})
-    },
+    refreshTable(){
+      this.$refs.roleTable.searchHandler()
+     },
     handleAdd() {
       this.show = true
     },
     // 编辑
     handleEdit(data){
-      this.editNode =  Object.assign( data ,this.editForm )
+      this.editRow =  data
       this.editShow = true
      },
     // 删除
     handleDel (data) {
-      // this.$store.dispatch('permission/delPermission',{id:data.id}).then((res) => {
-      //   this.loadNode()
-      // }) 
+      this.$store.dispatch('role/delRole',{id:data.id}).then((res) => {
+       this.refreshTable()
+      }) 
+    },
+    handlePermission(data){
+      this.$store.dispatch('permission/permissionTree',{}).then((res) => {
+        this.treeData = res
+      }) 
+      this.$store.dispatch('role/permissionTree',{id:data.id}).then((res) => {
+            res.data.map((permiss)=>{
+              this.expandedKeys.push(permiss.resourceId)
+              this.eheckedKeys.push(permiss.resourceId)
+           })
+         }) 
     }
   }
 }

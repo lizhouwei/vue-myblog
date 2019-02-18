@@ -3,36 +3,18 @@
        <!--新增界面-->
         <el-dialog title="新增" :visible.sync="visible" @close="handleClose" :show="show" append-to-body>
           <el-form  ref="addForm" :model="addForm" label-width="110px" :rules="addFormRules">
-            <el-form-item label="上级资源名称">
-              <el-input v-model="addForm.parentname" :disabled="true"></el-input>
+            <el-form-item label="角色编码">
+              <el-input v-model="addForm.roleCode"></el-input>
             </el-form-item>
-            <el-form-item label="上级路由路径">
-               <el-input v-model="addForm.parentpath" :disabled="true"></el-input>
+            <el-form-item label="角色名称">
+              <el-input v-model="addForm.roleName"></el-input>
             </el-form-item>
-            <el-form-item label="资源名称" prop="name">
-              <el-input v-model="addForm.name" ></el-input>
-            </el-form-item>
-            <el-form-item label="路由路径" prop="path">
-               <el-input v-model="addForm.path"></el-input>
-            </el-form-item>
-            <el-form-item label="组件路径" prop="componentUrl">
-              <el-input  v-model="addForm.componentUrl" ></el-input>
-            </el-form-item>
-            <el-form-item label="状态" prop="state">
+            <el-form-item label="角色状态" prop="state">
               <el-radio-group v-model="addForm.state">
                 <el-radio-button label="0">有效</el-radio-button>
                 <el-radio-button label="1">无效</el-radio-button>
               </el-radio-group>
           </el-form-item>
-          <el-form-item label="是否隐藏" prop="hide">
-            <el-radio-group v-model="addForm.hide">
-              <el-radio-button  label="0">是</el-radio-button>
-              <el-radio-button  label="1">否</el-radio-button>
-            </el-radio-group>
-        </el-form-item>
-            <el-form-item label="序号" prop="zindex">
-              <el-input-number  v-model="addForm.zindex"></el-input-number>
-            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="handleCancell">取 消</el-button>
@@ -51,16 +33,6 @@ export default {
     show: {
       type: Boolean,
       default: false
-    },
-    parentNode: { 
-      type: Object,
-      default: function (){
-        return{
-          pid:'',
-          parentname:'',
-          parentpath:''
-        }
-      }
     }
   },
   data() {
@@ -72,22 +44,11 @@ export default {
         ]
       },
       addForm: {//新增界面数据
-        pid: this.parentNode.id,
-        parentname:this.parentNode.name,
-        parentpath:this.parentNode.path,
-        name: '',
-        path: '',
-        componentUrl: '',
-        state:'0',
-        hide:'0',
-        zindex: 0
+        roleCode:'',
+        roleName:'',
+        state:0,
       }
     }
-  },
-  mounted() {
-    this.addForm.pid = this.parentNode.id
-    this.addForm.parentname = this.parentNode.name
-    this.addForm.parentpath = this.parentNode.path
   },
   watch: {
     show() {          //注意要随时监控
@@ -111,11 +72,11 @@ export default {
         if (valid) {
             this.$confirm('确认提交吗？', '提示', {}).then(() => {
             this.addLoading = true
-            this.$store.dispatch('permission/savePermission',this.addForm).then((res) => {
+            this.$store.dispatch('role/saveRole',this.addForm).then((res) => {
               this.addLoading = false
               this.$message({ message: '提交成功',  type: 'success' })
-              this.$emit('refreshNode')
-            
+              this.$emit('refreshTable')
+              this.handleClose()
             })
           })
         }
