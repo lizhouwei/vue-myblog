@@ -31,6 +31,7 @@ const actions = {
         commit('setcollapse')
     },
     generateMenuList({commit,state},permissionList){
+        console.log(permissionList)
         return new Promise((resolve) =>{
             commit('setMenuTree', permissionList)
             state.menuTree.map((nav) =>{

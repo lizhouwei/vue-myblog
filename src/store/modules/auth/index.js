@@ -47,6 +47,7 @@ const mutations = {
 const actions = {
     // 邮箱登录
     loginByEmail({ commit }, userInfo) {
+        console.log(userInfo)
         return new Promise((resolve) => {
             axios({
                 url: '/login',
@@ -111,13 +112,12 @@ const actions = {
         })
     },
     // 获取该用户角色的菜单列表
-    getPermissionTree({dispatch,commit,state}){
-        console.log(state.roleId)
-         return new Promise((resolve) =>{
+    getPermissionTree({dispatch,commit,state},params){
+        return new Promise((resolve) => {
             axios({
-                url: 'myblog/login/rolePremsTree',
-                method: 'post',
-                data: {id : '1'}
+            url: 'myblog/login/rolePremsTree',
+            method: 'post',
+            data:{id : '1'}
             }).then((res) => {
                 const response = res.data
                 commit('setPermissionList', response)

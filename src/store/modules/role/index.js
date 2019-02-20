@@ -48,22 +48,33 @@ const actions = {
         url: 'myblog/role/delRole',
         method: 'post',
         data: { ...params }
-    }).then((res) => {
-      resolve(res)
+      }).then((res) => {
+        resolve(res)
+      })
     })
-  })
-},
-permissionTree({ commit},params){
-  return new Promise((resolve) =>{
-    axios({
-        url: 'myblog/role/findResourceByRoleId',
-        method: 'post',
-        data: { ...params }
-    }).then((res) => {
-      resolve(res)
+  },
+  permissionTree({ commit},params){
+    return new Promise((resolve) =>{
+      axios({
+          url: 'myblog/role/findResourceByRoleId',
+          method: 'post',
+          data: { ...params }
+      }).then((res) => {
+        resolve(res)
+      })
     })
-  })
-},
+  },
+  saveRolePermission({ commit},params){
+    return new Promise((resolve) =>{
+      axios({
+          url: 'myblog/role/saveRolePermission',
+          method: 'post',
+          data: { ...params }
+      }).then((res) => {
+        resolve(res)
+      })
+    })
+  }
 }
 export default {
     namespaced: true,

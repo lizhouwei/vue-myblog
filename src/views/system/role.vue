@@ -11,14 +11,14 @@
         @handleDel='handleDel'
         @handlePermission='handlePermission'/>
        </el-aside>
-    <el-container>
-      <el-header style=" height:40px; text-align: right; font-size: 12px">
-        <AppTree ref="resourceTree" :checkbox=true :expandedKeys='expandedKeys' :eheckedKeys='eheckedKeys' :treeData="treeData"/>
-      </el-header>
-      <el-main>
-         
-      </el-main>
-    </el-container>
+      <el-container>
+        <el-header style="text-align: right; font-size: 12px;background-color: rgb(238, 241, 246)" >
+        <app-toolbar >
+              <el-button type="primary" @click="handleSave">保存权限树</el-button>
+          </app-toolbar>
+          <AppTree ref='resourceTree'  :checkbox=true :expandedKeys='expandedKeys' :eheckedKeys='eheckedKeys' :treeData="treeData"/>
+        </el-header>
+      </el-container>
 </el-container>
   <div>
     <role-add :show.sync="show" v-if='show' @refreshTable='refreshTable'></role-add > 
@@ -43,6 +43,7 @@ const tableHeader = [ // 表头数据
 ]
 import RoleAdd from './roleAdd'
 import RoleEdit from './roleEdit'
+import qs from 'qs'
 
 export default {
   name:'role',
@@ -59,8 +60,10 @@ export default {
       tableHeader: tableHeader,
       editRow:{},
       expandedKeys:[],
-      eheckedKeys:[]
-    }
+      eheckedKeys:[],
+      selectedKey : '',
+      resourceTree:'resourceTree'
+     }
   },
   methods: {
     refreshTable(){
@@ -81,15 +84,28 @@ export default {
       }) 
     },
     handlePermission(data){
+      this.selectedKey = data.id
       this.$store.dispatch('permission/permissionTree',{}).then((res) => {
         this.treeData = res
       }) 
       this.$store.dispatch('role/permissionTree',{id:data.id}).then((res) => {
+        let permis=[]
             res.data.map((permiss)=>{
-              this.expandedKeys.push(permiss.resourceId)
-              this.eheckedKeys.push(permiss.resourceId)
+              permis.push(permiss.resourceId)
            })
+              this.expandedKeys =permis
+              this.eheckedKeys =permis
          }) 
+    },
+    handleSave(){
+      this.$refs['resourceTree'].getCheckedKeys()
+      const checkedKeys = this.$refs['resourceTree'].checkedKeys 
+      const roleResourceList=[]
+      if(this.selectedKey && checkedKeys){
+         this.$store.dispatch('role/saveRolePermission', {'roleId':this.selectedKey, 'resourceId':checkedKeys }).then((res) => {
+        }) 
+      }
+      
     }
   }
 }
