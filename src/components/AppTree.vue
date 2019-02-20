@@ -10,11 +10,10 @@
           :data="treeData"
           :props="defaultProps"
           :filter-node-method="filterNode"
-          :default-expand-all="expandAll"
           :default-expanded-keys="expandedKeys"
           :default-checked-keys="eheckedKeys"
-          @node-click=" (object,node,treeObject) => emitEventHandler('node-click', object, node)" 
-          ref="tree2">
+          @node-click=" (object,node,treeObject) => emitEventHandler('node-click', object, node)"
+          :ref='reference'>
         </el-tree>
  
 </div>
@@ -33,6 +32,7 @@ let props = {
   expandedKeys: { type: Array },
   eheckedKeys: { type: Array },
   checkbox:{ type: Boolean, default: false },
+  reference:{ type: String, default: 'tree' },
 }
  
 export default {
@@ -44,26 +44,33 @@ export default {
           children: 'children',
           label: 'name'
         },
+        checkedKeys:[]
     }
   },
   props,
   computed: {
   },
   watch: {
-      filterText(val) {
-        this.$refs.tree2.filter(val);
-      }
-    },
+    filterText(val) {
+      const {reference} = this
+      this.$refs[reference].filter(val)
+    }
+  },
   mounted() {
   },
   methods:{
     filterNode(value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      if (!value) return true
+      return data.name.indexOf(value) !== -1;
     },
     emitEventHandler(event,object) {
       this.$emit(event, object)
-    }
+    },
+    getCheckedKeys() {
+      const {reference} = this
+      this.checkedKeys =this.$refs[reference].getCheckedKeys()
+     },
+ 
   }
 }
 
