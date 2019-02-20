@@ -113,7 +113,7 @@ const actions = {
     },
     // 获取该用户角色的菜单列表
     getPermissionTree({dispatch,commit,state},params){
-        return new Promise((resolve) => {
+        return new Promise((resolve) => { 
             axios({
             url: 'myblog/login/rolePremsTree',
             method: 'post',
