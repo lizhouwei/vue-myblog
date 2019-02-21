@@ -21,18 +21,62 @@ const mutations = {
 }
 const actions = {
     getUserList(params) {
-        console.log(params)
         return new Promise((resolve) => {
             axios({
-                url: '/user/userList',
+                url: 'myblog/user/userList',
                 method: 'post',
                 data: { ...params}
             }).then(res => {
-                console.log(res)
                 resolve(res)
             }) 
         })
     },
+    getAllRole({ commit},params) {
+        return new Promise((resolve) => {
+            axios({
+                url: 'myblog/user/allRoleList',
+                method: 'post',
+                data: { ...params}
+            }).then(res => {
+                resolve(res)
+            }) 
+        })
+    },
+    saveUser({ commit},params){
+        return new Promise((resolve) =>{
+           axios({
+               url: 'myblog/user/saveUser',
+               method: 'post',
+               data: { ...params }
+           }).then((res) => {
+            
+            resolve(res)
+           })
+        })
+      },
+      updateUser({ commit},params){
+          return new Promise((resolve) =>{
+          axios({
+              url: 'myblog/user/updateUser',
+              method: 'post',
+              data: { ...params }
+          }).then((res) => {
+              resolve(res)
+          })
+      })
+      },
+    
+      delUser({ commit},params){
+      return new Promise((resolve) =>{
+        axios({
+            url: 'myblog/user/delUser',
+            method: 'post',
+            data: { ...params }
+          }).then((res) => {
+            resolve(res)
+          })
+        })
+      },
 }
 export default {
     namespaced: true,

@@ -25,18 +25,20 @@
             <el-button type="primary" @click="handleAdd">新增</el-button>
          </app-toolbar>
         <!-- 表格  -->
-        <AppTable  ref="userTable" :url="'user/getUserList'" :formParams="formParams"  @row-click='rowClick'  :tableHeader="tableHeader"/>
+        <AppTable  ref="userTable" :url="'user/getUserList'" :formParams="formParams"   :tableHeader="tableHeader"
+           @handleEdit='handleEdit'
+           @handleDel='handleDel'/>
     <div>
-         <user-add :show.sync="show" @renovate="getuser"></user-add>
-
+        <user-add :show.sync="show" v-if='show' @refreshTable='refreshTable'></user-add>
+        <user-edit :editShow.sync="editShow" v-if='editShow' @refreshTable='refreshTable' :editRow='editRow' ></user-edit >  
     </div>
-    
     </div>
 </template>
 
 <script>
 import {mapActions } from 'vuex'
 import UserAdd from './userAdd'
+import UserEdit from './userEdit'
 
 
 let moment = require("moment")
@@ -47,20 +49,23 @@ export const tableHeader = [ // 表头数据
   { prop: 'email', label: '邮箱' },
   { prop: 'createTime', label: '注册时间', minWidth: "140px", formatter: (rowObject, value,  index) => {return  moment(value).format("YYYY-MM-DD HH:mm:ss")} },
   { prop: 'laneno', label: '状态', render: row => { const { laneno } = row ; return laneno ?  'laneno' : 'Unknow' } },
+  { prop: 'defaultRole.roleCode', label: '默认角色id' , hide:true },
+  { prop: 'defaultRole.roleName', label: '默认角色' , minWidth: '100px' },
 { prop: 'oper', label: '操作', fixed: 'right', minWidth: '140px',
     oper: [
-      { name: '编辑', type:'primary', clickFun: ()=>{} },
-      { name: '删除', type:'danger',clickFun: ()=>{} }
+       { name: '编辑', type:'primary', clickFun : 'handleEdit' },
+      { name: '删除', type:'danger',clickFun:'handleDel' },
     ]
   }
 ]
 
 export default {
     name: 'userList',
-    components:{UserAdd },
+    components:{UserAdd ,UserEdit},
     data() {
         return {
-             show: false,//新增界面是否显示 
+             show: false,//新增界面是否显示
+             editShow: false, 
              searchForm: {
                 userCode: '',
                 userName: '',
@@ -69,32 +74,30 @@ export default {
             },
             formParams:{},
             tableHeader: tableHeader,
+            editRow:{}
         }
     },
     mounted() {
     },
     methods: {
-       ...mapActions({
-        }),
         search(){
           this.$refs.userTable.searchHandler(this.searchForm)
-            console.log(`欲提交的数据  :${this.searchForm} `)
+        }, // 编辑
+        handleEdit(data){
+        this.editRow =  data
+        this.editShow = true
         },
-        rowClick(data){
-            console.log(data.userCode)
-        } ,
-       
-        handleEdit: function (index, row) {
-        //显示编辑界面
-			this.editFormVisible = true
-			this.editForm = Object.assign({}, row)
-		},
+        // 删除
+        handleDel (data) {
+            this.$store.dispatch('user/delUser',{id:data.id}).then((res) => {
+                this.refreshTable()
+            }) 
+        },
         handleAdd: function () {
-        //显示新增界面
             this.show = true
         },
-        getuser() {
-
+        refreshTable() {
+            this.search()
         }
     },
 }
