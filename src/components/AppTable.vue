@@ -129,8 +129,6 @@ export default {
   },
   methods:{
      searchHandler(formParams) {
-
-      console.log(formParams)
       this.loading = true
       const { url,method,showPagination,pagination} = this
       if(showPagination){
