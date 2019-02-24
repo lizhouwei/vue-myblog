@@ -49,8 +49,8 @@ export const tableHeader = [ // 表头数据
   { prop: 'email', label: '邮箱' },
   { prop: 'createTime', label: '注册时间', minWidth: "140px", formatter: (rowObject, value,  index) => {return  moment(value).format("YYYY-MM-DD HH:mm:ss")} },
   { prop: 'laneno', label: '状态', render: row => { const { laneno } = row ; return laneno ?  'laneno' : 'Unknow' } },
-  { prop: 'defaultRole.roleCode', label: '默认角色id' , hide:true },
-  { prop: 'defaultRole.roleName', label: '默认角色' , minWidth: '100px' },
+  { prop: 'defaultRole.roleCode', label: '默认角色id' , hide:true ,},
+  { prop: 'defaultRoleName', label: '默认角色' , minWidth: '100px',render: row => { const { defaultRole } = row ; return defaultRole ?  defaultRole.roleName : '' } },
 { prop: 'oper', label: '操作', fixed: 'right', minWidth: '140px',
     oper: [
        { name: '编辑', type:'primary', clickFun : 'handleEdit' },

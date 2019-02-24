@@ -20,7 +20,7 @@ const mutations = {
     }
 }
 const actions = {
-    getUserList(params) {
+    getUserList({ commit},params) {
         return new Promise((resolve) => {
             axios({
                 url: 'myblog/user/userList',

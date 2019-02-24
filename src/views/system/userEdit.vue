@@ -44,7 +44,7 @@ export default {
           userName: '',
           email:'',
           mobile: '',
-          defaultRoleCode:'',
+          defaultRole:'',
         }
       }
     }
@@ -63,7 +63,7 @@ export default {
         userName:this.editRow.userName,
         email:this.editRow.email,
         mobile:this.editRow.mobile,
-        defaultRoleCode:this.editRow.defaultRoleCode,
+        defaultRoleCode:this.editRow.defaultRole.roleCode,
       },
       roleList:[] ,
     }
@@ -99,8 +99,7 @@ export default {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
             this.addLoading = true
-            //let para = Object.assign({}, this.editForm)
-             this.$store.dispatch('role/updateRole',this.editForm).then((res) => {
+              this.$store.dispatch('user/updateUser',this.editForm).then((res) => {
               this.addLoading = false
               this.$message({ message: '提交成功',  type: 'success' })
               this.$emit('refreshTable')
