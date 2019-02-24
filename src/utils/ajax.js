@@ -23,6 +23,7 @@ service.interceptors.request.use((config) => {
        }
       //config.data = qs.stringify(config.data);
     }
+
     // 预处理请求的信息
     return config
   }, (error) => {
